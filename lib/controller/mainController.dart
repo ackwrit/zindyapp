@@ -115,7 +115,7 @@ class homeMainC extends State<mainController>{
                       ],
 
                     ),
-                    Padding(padding: EdgeInsets.all(10),),
+                    Padding(padding: EdgeInsets.all(20),),
                     //deuxième ligne conainer
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
