@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>139797422576-20s2sfv8ncesk0qbvld9ql9l2j617mps.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.139797422576-20s2sfv8ncesk0qbvld9ql9l2j617mps</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDLvlk9t09Vmx95x50kMBCGo2iQRyJSw3I</string>
+	<key>GCM_SENDER_ID</key>
+	<string>139797422576</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>lightphoenix.zindy</string>
+	<key>PROJECT_ID</key>
+	<string>zindy-991fe</string>
+	<key>STORAGE_BUCKET</key>
+	<string>zindy-991fe.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:139797422576:ios:ec0093be8fbe44d1d23d35</string>
+	<key>DATABASE_URL</key>
+	<string>https://zindy-991fe.firebaseio.com</string>
+</dict>
+</plist>
