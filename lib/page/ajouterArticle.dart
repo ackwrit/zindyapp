@@ -1,6 +1,10 @@
+import 'dart:io';
 import 'dart:math';
 
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
 import 'package:zindy/fonction/firebaseHelper.dart';
 
@@ -19,6 +23,7 @@ class homeAjouterArticle extends State<ajouterArticle>{
   var articlePrix;
   var articleQuantite;
   String identifiantArticle = randomAlphaNumeric(40);
+  String dropdownValue = 'High-Tech';
   
   @override
   Widget build(BuildContext context) {
@@ -123,8 +128,31 @@ class homeAjouterArticle extends State<ajouterArticle>{
 
               ),
             ),
+            Padding(padding: EdgeInsets.all(10)),
+            FlatButton(
+                onPressed: (){
+                  takePicture(ImageSource.gallery);
+
+                },
+                child: Text('Insérer une image')
+            ),
 
             Padding(padding: EdgeInsets.all(10)),
+            DropdownButton(
+              value: dropdownValue,
+                items: <String>['High-Tech', 'Maroquinerie', 'Nourriture', 'Beauté']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String newValue){
+                  setState(() {
+                    dropdownValue = newValue;
+                  });
+                }
+            ),
             RaisedButton(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               onPressed: (){
@@ -149,6 +177,17 @@ class homeAjouterArticle extends State<ajouterArticle>{
      "nom":articleNom,
    };
    firebaseHelper().addArticle(id, map);
+
+
+
+  }
+
+  Future <void> takePicture(ImageSource source) async {
+    //File fileimage = await ImagePicker.pickImage(source: source);
+    File file = await FilePicker.getFile(
+      type: FileType.image
+
+    );
 
 
 
