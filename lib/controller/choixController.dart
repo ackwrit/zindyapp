@@ -59,14 +59,38 @@ class homeChoix extends State<choixController>{
           Widget controllerSelected = controller()[index];
           return Scaffold(
               appBar: AppBar(
-                title: Image.asset('assets/logozindy.PNG'),
+                //title:Image.asset('assets/logozindy.PNG'),
+                title:  Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20)
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          hintText: 'Rechercher',
+                          prefixIcon: Icon(Icons.search),
+
+                        ),
+
+                      ),
+                    ),
+
+                    IconButton(icon: Icon(Icons.shopping_basket,size: 30,), onPressed: null)
+
+                  ],
+                ),
 
 
-                backgroundColor: Colors.transparent,
-                elevation: 0.0,
+                backgroundColor: Colors.grey[500],
+
+
 
               ),
-              extendBodyBehindAppBar: true,
               body: controllerSelected
           );
         }

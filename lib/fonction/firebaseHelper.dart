@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:zindy/model/Article.dart';
 import 'package:zindy/model/User.dart';
@@ -85,6 +88,19 @@ class firebaseHelper{
   {
     DataSnapshot snapshot = await base_article.child(uid).once();
     return User(snapshot);
+  }
+
+
+
+  //storage
+  static final base_storage = FirebaseStorage.instance.ref();
+  final StorageReference storage_article = base_storage.child("article");
+
+  Future <String> savePicture(File file,StorageReference storageReference) async{
+    StorageUploadTask storageUploadTask = storageReference.putFile(file);
+    StorageTaskSnapshot snapshot = await storageUploadTask.onComplete;
+    String url = await snapshot.ref.getDownloadURL();
+    return url;
   }
 
 }

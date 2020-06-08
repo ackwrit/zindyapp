@@ -6,7 +6,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:random_string/random_string.dart';
+import 'package:zindy/controller/administrationController.dart';
 import 'package:zindy/fonction/firebaseHelper.dart';
+import 'package:zindy/model/Article.dart';
 
 class ajouterArticle extends StatefulWidget{
   @override
@@ -22,13 +24,15 @@ class homeAjouterArticle extends State<ajouterArticle>{
   String articleDesc;
   var articlePrix;
   var articleQuantite;
+  String imageArticle='';
+  Article article;
   String identifiantArticle = randomAlphaNumeric(40);
   String dropdownValue = 'High-Tech';
   
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    print(identifiantArticle);
+    print(imageArticle);
     return bodyPage();
   }
 
@@ -171,12 +175,23 @@ class homeAjouterArticle extends State<ajouterArticle>{
 
 
   validation(){
-    String id="fjfnrjkfntekj";
+    String id=identifiantArticle;
    Map map ={
      "uid":id,
      "nom":articleNom,
+     'prix':articlePrix,
+     'quantite':articleQuantite,
+     'image':imageArticle,
+     'desc':articleDesc,
+     'flash':''
    };
    firebaseHelper().addArticle(id, map);
+   Navigator.push(context, MaterialPageRoute(
+     builder: (BuildContext context)
+         {
+           return administrationController();
+         }
+   ));
 
 
 
@@ -188,6 +203,17 @@ class homeAjouterArticle extends State<ajouterArticle>{
       type: FileType.image
 
     );
+    //firebaseHelper().savePicture(file, firebaseHelper().storage_article.child(identifiantArticle)).then(
+      //      (string)
+        //{
+
+          //setState(() {
+            //imageArticle=string;
+          //});
+
+
+        //}
+          //  );
 
 
 

@@ -27,14 +27,30 @@ class homeListe extends State<listerArticle>{
 
   Widget bodyPage(){
     return Container(
+      height: MediaQuery.of(context).size.height,
       padding: EdgeInsets.only(top:120),
       child: FirebaseAnimatedList(
+        scrollDirection: Axis.vertical,
+          shrinkWrap: true,
           query: firebaseHelper().base_article,
           itemBuilder: (BuildContext context,DataSnapshot snapshot,Animation<double>animation,int index){
             Article listArticle = Article(snapshot);
-            return ListTile(
-              leading: Text(listArticle.nom),
-            );
+            print(listArticle.nom);
+            if(listArticle.nom==null)
+              {
+                return Container();
+              }
+            else {
+              return Card(
+                elevation: 10.0,
+                child: ListTile(
+                  leading: Text(listArticle.nom),
+                  trailing: IconButton(
+                      icon: Icon(Icons.delete), onPressed: null),
+
+                ),
+              );
+            }
           }
       ),
     );

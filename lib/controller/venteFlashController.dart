@@ -106,11 +106,19 @@ class homeVenteFlash extends State<venteFlashController>{
           query: firebaseHelper().base_article,
           itemBuilder: (BuildContext context,DataSnapshot snapshot,Animation<double>animation,int index){
             Article listArticle = Article(snapshot);
-            return ListTile(
-              trailing: null,
-              title:Text(listArticle.image),
+            if(listArticle.nom==null)
+              {
+                return Container();
+              }
+            else
+              {
+                return ListTile(
+                  trailing: Text("image de l'article"),
+                  title:Text(listArticle.nom),
 
-            );
+                );
+              }
+
 
           }
       ),

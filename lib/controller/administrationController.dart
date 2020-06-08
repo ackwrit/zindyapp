@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zindy/controller/choixController.dart';
 import 'package:zindy/controller/mainAppController.dart';
 import 'package:zindy/page/ajouterArticle.dart';
 import 'package:zindy/page/listerArticle.dart';
@@ -48,7 +49,7 @@ class homePanel extends State<administrationController>{
                     Navigator.push(context, MaterialPageRoute(
                         builder: (BuildContext context)
                         {
-                          return mainAppController();
+                          return choixController();
                         }
                     ));
 
