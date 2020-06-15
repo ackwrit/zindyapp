@@ -203,17 +203,18 @@ class homeAjouterArticle extends State<ajouterArticle>{
       type: FileType.image
 
     );
-    //firebaseHelper().savePicture(file, firebaseHelper().storage_article.child(identifiantArticle)).then(
-      //      (string)
-        //{
+    firebaseHelper().savePicture(file, firebaseHelper().storage_article.child(identifiantArticle)).then(
+            (string)
+        {
 
-          //setState(() {
-            //imageArticle=string;
-          //});
+          setState(() {
+            imageArticle = string;
+          });
+          print(imageArticle);
 
 
-        //}
-          //  );
+        }
+          );
 
 
 

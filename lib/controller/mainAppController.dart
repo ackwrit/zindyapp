@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:zindy/controller/administrationController.dart';
 import 'package:zindy/controller/choixController.dart';
+import 'package:zindy/fonction/firebaseHelper.dart';
 
 class mainAppController extends StatefulWidget{
   @override
@@ -12,8 +15,11 @@ class mainAppController extends StatefulWidget{
 }
 
 class homeMain extends State<mainAppController>{
-  String identifiant;
-  String password;
+  String phoneNumber;
+  TextEditingController codeController;
+  String smsCode;
+  String verificationCode;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -40,46 +46,35 @@ class homeMain extends State<mainAppController>{
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  Text('Connexion'),
-                  Padding(padding: EdgeInsets.all(10)),
-                  TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      hintText: 'N° de téléphone',
-                      fillColor: Colors.white,
-                      filled: true,
+                InternationalPhoneNumberInput(
+                  onInputChanged: (number){
+                    setState(() {
+                      phoneNumber = number.phoneNumber;
 
-                    ),
-                    onChanged: (value){
-                      setState(() {
-                        identifiant = value ;
-                      });
-                    },
+                    });
+
+                  },
 
 
+
+                  selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                  hintText: 'N° de téléphone',
+                  inputDecoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20)
+                    )
                   ),
-                  TextField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      hintText: 'Entrer votre mot de passe',
-                      fillColor: Colors.white,
-                      filled: true,
-
-                    ),
-                    onChanged: (value){
-                      setState(() {
-                        identifiant = value ;
-                      });
-                    },
+                ),
 
 
-                  ),
-                  FlatButton(onPressed: null, child: Text('Inscription')),
+                  FlatButton(onPressed: (){
+
+                    loginMobile(phoneNumber, context);
+
+                  },
+                      child: Text('Inscription')),
                   FlatButton(onPressed: (){
                     Navigator.push(context, MaterialPageRoute(
                       builder: (BuildContext context){
@@ -102,5 +97,65 @@ class homeMain extends State<mainAppController>{
       ),
     );
   }
+
+
+
+
+
+  Future<bool> loginMobile(String phone, BuildContext context) async{
+    final auth=FirebaseAuth.instance;
+    auth.verifyPhoneNumber(
+        phoneNumber: phone,
+        timeout: Duration(seconds: 60),
+        verificationCompleted: (AuthCredential credential) async{
+          AuthResult result = await auth.signInWithCredential(credential);
+          FirebaseUser user = result.user;
+
+        },
+        verificationFailed: (AuthException exception){
+          print(exception);
+        },
+        codeSent: (String verificationId,[int forceResendingToken]){
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context){
+                return AlertDialog(
+                  title: Text('Entrer le code'),
+                  content: Column(
+                    children: [
+                      TextField(
+                        controller: codeController,
+                      ),
+                    ],
+
+                  ),
+                  actions: [
+                    FlatButton(
+                        onPressed: () async {
+                          final code = codeController.text.trim();
+                          AuthCredential credential =PhoneAuthProvider.getCredential(verificationId: verificationId, smsCode: code);
+                          AuthResult result = await auth.signInWithCredential(credential);
+                          FirebaseUser user =result.user;
+                        },
+                        child: Text('Confirmer'))
+                  ],
+
+                );
+              }
+          );
+        },
+        codeAutoRetrievalTimeout: null
+    );
+  }
+
+
+
+
+
+
+
+
+
 
 }

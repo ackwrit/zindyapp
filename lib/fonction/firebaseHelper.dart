@@ -48,6 +48,53 @@ class firebaseHelper{
   }
 
 
+  Future<bool> loginMobile(String phone, BuildContext context,TextEditingController codeController) async{
+    auth.verifyPhoneNumber(
+        phoneNumber: phone,
+        timeout: Duration(seconds: 60),
+        verificationCompleted: (AuthCredential credential) async{
+          AuthResult result = await auth.signInWithCredential(credential);
+         FirebaseUser user = result.user;
+
+        },
+        verificationFailed: (AuthException exception){
+          print(exception);
+        },
+        codeSent: (String verificationId,[int forceResendingToken]){
+          showDialog(
+              context: context,
+            barrierDismissible: false,
+            builder: (context){
+                return AlertDialog(
+                  title: Text('Entrer le code'),
+                  content: Column(
+                    children: [
+                      TextField(
+                        controller: codeController,
+                      ),
+                    ],
+
+                  ),
+                  actions: [
+                    FlatButton(
+                        onPressed: () async {
+                          final code = codeController.text.trim();
+                          AuthCredential credential =PhoneAuthProvider.getCredential(verificationId: verificationId, smsCode: code);
+                          AuthResult result = await auth.signInWithCredential(credential);
+                          FirebaseUser user =result.user;
+                        },
+                        child: Text('Confirmer'))
+                  ],
+
+                );
+            }
+          );
+        },
+        codeAutoRetrievalTimeout: null
+    );
+  }
+
+
 
 
 
