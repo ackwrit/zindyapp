@@ -31,6 +31,7 @@ class homeMain extends State<mainAppController>{
   Widget bodyPage(){
     return SingleChildScrollView(
       child: Container(
+        height: MediaQuery.of(context).size.height/1.2,
         padding: EdgeInsets.all(50),
         child: Center(
           child: Column(
@@ -71,9 +72,9 @@ class homeMain extends State<mainAppController>{
                       ),
                     ),
 
-                    Padding(padding: EdgeInsets.all(60)),
+                    Padding(padding: EdgeInsets.all(20)),
                     codeSent?TextFormField(
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         hintText: 'Entrer le code'
                       ),
