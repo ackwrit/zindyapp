@@ -162,6 +162,7 @@ PODS:
 DEPENDENCIES:
   - countdown_flutter (from `.symlinks/plugins/countdown_flutter/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
+  - Firebase/Auth
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_auth_web (from `.symlinks/plugins/firebase_auth_web/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -264,6 +265,6 @@ SPEC CHECKSUMS:
   SDWebImage: 97351f6582ceca541ea294ba66a1fcb342a331c2
   SDWebImageFLPlugin: 6c2295fb1242d44467c6c87dc5db6b0a13228fd8
 
-PODFILE CHECKSUM: c34e2287a9ccaa606aeceab922830efb9a6ff69a
+PODFILE CHECKSUM: 07060be3cffe4dbbedb638a6c395fa4b90213c3a
 
 COCOAPODS: 1.9.3

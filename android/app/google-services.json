@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "139797422576",
+    "firebase_url": "https://zindy-991fe.firebaseio.com",
+    "project_id": "zindy-991fe",
+    "storage_bucket": "zindy-991fe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139797422576:android:cad5292ffba45eaed23d35",
+        "android_client_info": {
+          "package_name": "lightphoenix.zindy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "139797422576-f5kdp0io2v48lgk64g85vn6k1i4kg2j4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfZ1pO5pSxZh0UGOnkZqsh3kz50q0o5tM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "139797422576-f5kdp0io2v48lgk64g85vn6k1i4kg2j4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "139797422576-20s2sfv8ncesk0qbvld9ql9l2j617mps.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "lightphoenix.zindy"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

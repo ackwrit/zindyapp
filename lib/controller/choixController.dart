@@ -100,27 +100,40 @@ class homeChoix extends State<choixController>{
 
 
   Widget tabScaffAndroid(){
-    return null;
-  }
+    return new DefaultTabController(
+      length: 3,
+      child: new Scaffold(
+        appBar: new AppBar(
+          backgroundColor: Colors.blue,
+          title: Text('Nymbeul'),
+          centerTitle: true,
+          actions: <Widget>[
+            new IconButton(icon:Icon(Icons.account_circle,size: 32.0,color: Colors.white,), onPressed:null),
+
+          ],
+          bottom: new TabBar(
+              tabs: [
+                new Tab(icon: new Icon(Icons.format_list_bulleted,),child: new Text("Catégorie",style: new TextStyle(fontSize: 18),)),
+                new Tab(icon: new Icon(Icons.person),child:new Text('Compte',style: new TextStyle(fontSize: 18),)),
+                new Tab(icon: new Icon(Icons.info_outline),child:new Text("Aide",style: new TextStyle(fontSize: 18),)),
 
 
-  Widget scaff(){
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(icon: Icon(Icons.home),onPressed: null,),
-        title: Image.asset('assets/logozindy.PNG'),
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.shopping_cart), onPressed: null)
-        ],
+
+
+
+
+              ]),
+        ),
+        body: new TabBarView(
+          children: controller(),
+        ),
       ),
-      extendBodyBehindAppBar: true,
-      backgroundColor: Colors.white,
-      body: null,
 
     );
   }
+
+
+
 
 
 }

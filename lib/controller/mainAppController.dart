@@ -15,10 +15,11 @@ class mainAppController extends StatefulWidget{
 }
 
 class homeMain extends State<mainAppController>{
-  String phoneNumber;
+  String phone,verificationId;
   TextEditingController codeController;
   String smsCode;
   String verificationCode;
+  bool codeSent =false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,128 +29,150 @@ class homeMain extends State<mainAppController>{
   }
 
   Widget bodyPage(){
-    return Container(
-      padding: EdgeInsets.all(50),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.all(50),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
 
-            Padding(padding: EdgeInsets.all(60)),
-            new Container(
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color:Colors.orange[50],
-              ),
-              height: MediaQuery.of(context).size.height/2.5,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                InternationalPhoneNumberInput(
-                  onInputChanged: (number){
-                    setState(() {
-                      phoneNumber = number.phoneNumber;
+              Padding(padding: EdgeInsets.all(60)),
+              new Container(
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color:Colors.orange[50],
+                ),
+                height: MediaQuery.of(context).size.height/2.5,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    InternationalPhoneNumberInput(
+                      onInputChanged: (number){
+                        setState(() {
+                          phone = number.toString().trim();
 
-                    });
-
-                  },
-
+                        });
 
 
-                  selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
-                  hintText: 'N° de téléphone',
-                  inputDecoration: InputDecoration(
-                    fillColor: Colors.white,
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20)
-                    )
-                  ),
+                      },
+
+
+
+                      selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                      hintText: 'N° de téléphone',
+                      inputDecoration: InputDecoration(
+                          fillColor: Colors.white,
+                          filled: true,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20)
+                          )
+                      ),
+                    ),
+
+                    Padding(padding: EdgeInsets.all(60)),
+                    codeSent?TextFormField(
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        hintText: 'Entrer le code'
+                      ),
+                      onChanged: (val)
+                      {
+                        setState(() {
+                          smsCode=val;
+                        });
+                      },
+
+                    ):Container(),
+
+
+                    FlatButton(onPressed: (){
+
+
+                      codeSent?signOTP(smsCode,verificationId):loginMobile(phone);
+
+                    },
+                        child: codeSent?Text('Inscription'):Text('Validation')
+                    ),
+                    FlatButton(onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (BuildContext context){
+                            return administrationController();
+                          }
+                      ));
+
+                    },
+                        child: Text('Connexion')),
+                  ],
                 ),
 
 
-                  FlatButton(onPressed: (){
 
-                    loginMobile(phoneNumber, context);
 
-                  },
-                      child: Text('Inscription')),
-                  FlatButton(onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (BuildContext context){
-                        return administrationController();
-                      }
-                    ));
 
-                  },
-                      child: Text('Connexion')),
-                ],
               ),
-
-
-
-
-
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
+      )
     );
+
   }
 
 
 
 
 
-  Future<bool> loginMobile(String phone, BuildContext context) async{
-    final auth=FirebaseAuth.instance;
-    auth.verifyPhoneNumber(
+  Future<void> loginMobile(String phone) async{
+
+
+    final PhoneVerificationCompleted verified = (AuthCredential authResult){
+      FirebaseAuth.instance.signInWithCredential(authResult);
+      
+
+    };
+
+    final PhoneVerificationFailed verificationFailed = (AuthException authException){
+      print('${authException}');
+
+    };
+
+    final PhoneCodeSent smsSent =(String verId,[int forceResend]){
+      this.verificationId =verId;
+      setState(() {
+        this.codeSent =true;
+      });
+    };
+
+    final PhoneCodeAutoRetrievalTimeout autoRetrievalTimeout =(String verId){
+      this.verificationId = verId;
+    };
+
+    FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: phone,
-        timeout: Duration(seconds: 60),
-        verificationCompleted: (AuthCredential credential) async{
-          AuthResult result = await auth.signInWithCredential(credential);
-          FirebaseUser user = result.user;
-
-        },
-        verificationFailed: (AuthException exception){
-          print(exception);
-        },
-        codeSent: (String verificationId,[int forceResendingToken]){
-          showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (context){
-                return AlertDialog(
-                  title: Text('Entrer le code'),
-                  content: Column(
-                    children: [
-                      TextField(
-                        controller: codeController,
-                      ),
-                    ],
-
-                  ),
-                  actions: [
-                    FlatButton(
-                        onPressed: () async {
-                          final code = codeController.text.trim();
-                          AuthCredential credential =PhoneAuthProvider.getCredential(verificationId: verificationId, smsCode: code);
-                          AuthResult result = await auth.signInWithCredential(credential);
-                          FirebaseUser user =result.user;
-                        },
-                        child: Text('Confirmer'))
-                  ],
-
-                );
-              }
-          );
-        },
-        codeAutoRetrievalTimeout: null
+        timeout: Duration(seconds: 30),
+        verificationCompleted: verified,
+        verificationFailed: verificationFailed,
+        codeSent: smsSent,
+        codeAutoRetrievalTimeout: autoRetrievalTimeout
     );
+
+
+
+
   }
 
 
+
+
+ signOTP(smsCode,verifId){
+    AuthCredential authCredential=PhoneAuthProvider.getCredential(
+        verificationId: verifId,
+        smsCode: smsCode);
+    FirebaseAuth.instance.signInWithCredential(authCredential);
+
+ }
 
 
 
